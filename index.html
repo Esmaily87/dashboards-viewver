@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Painéis Corporativos</title>
+
+<style>
+:root {
+    --cor-primaria: #5c079e;
+    --cor-suporte: #8cc63f;
+    --fundo: #F8F9FA;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    background-color: var(--fundo);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background: white;
+    border-right: 3px solid var(--cor-suporte);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
+    overflow: hidden;
+}
+
+.sidebar.collapsed {
+    width: 70px;
+}
+
+/* Toggle button */
+/* Botão toggle */
+.toggle-btn {
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--cor-primaria);
+    transition: transform 0.2s ease;
+}
+
+/* Container do toggle */
+.toggle-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+/* Logo */
+.logo {
+    margin-bottom: 30px;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .logo {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+}
+
+/* Menu */
+.menu button {
+    background: #f2f4f8;
+    border: none;
+    padding: 14px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    transition: 0.2s;
+    color: var(--cor-primaria);
+
+    white-space: normal;      /* permite quebrar linha */
+    word-wrap: break-word;    /* quebra palavras grandes */
+    line-height: 1.4;         /* melhora legibilidade */
+}
+
+.menu button:hover {
+    background: #e4e7ec;
+}
+
+.menu button.active {
+    background: var(--cor-primaria);
+    color: white;
+}
+
+/* Quando colapsado, esconde texto */
+.sidebar.collapsed .menu button span {
+    display: none;
+}
+
+/* Conteúdo */
+.content {
+    flex: 1;
+    height: 100vh;
+    transition: 0.3s;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: none;
+}
+
+iframe.active {
+    display: block;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar" id="sidebar">
+
+   <div class="toggle-container">
+    <div class="toggle-btn" id="toggleBtn" onclick="toggleSidebar()">
+        ◀
+    </div>
+</div>
+
+    <div class="logo">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpLIQtpxxZeXqbNamdf-y-O_AZYeqwKA5FqA&s" width="100%" />
+    </div>
+
+    <div class="menu">
+        <button id="btn1" class="active" onclick="showPanel('powerbi')">
+            📊 <span>Monitoramento de Processos de PD&I</span>
+        </button>
+
+        <button id="btn2" onclick="showPanel('dash')">
+            📈 <span>Ressarcimento dos Custos Indiretos</span>
+        </button>
+    </div>
+</div>
+
+<div class="content">
+    <iframe id="powerbi" class="active"
+        src="https://app.powerbi.com/view?r=eyJrIjoiMjM3YzMwY2UtNTFmZS00NzNkLTkwM2ItZWI5YzgyY2NjYmI4IiwidCI6ImI1OTFhZTU0LTMzYzItNDU4OS1iZTY2LTkwMjFhNDE5NmM3YyJ9">
+    </iframe>
+
+    <iframe id="dash"
+        src="https://ufcinova-fluxo-de-caixa.vercel.app/">
+    </iframe>
+</div>
+
+<script>
+function showPanel(panel) {
+    document.querySelectorAll("iframe").forEach(el => el.classList.remove("active"));
+    document.querySelectorAll(".menu button").forEach(el => el.classList.remove("active"));
+
+    document.getElementById(panel).classList.add("active");
+
+    if(panel === "powerbi") {
+        document.getElementById("btn1").classList.add("active");
+    } else {
+        document.getElementById("btn2").classList.add("active");
+    }
+}
+
+function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    const toggleBtn = document.getElementById("toggleBtn");
+
+    sidebar.classList.toggle("collapsed");
+
+    if (sidebar.classList.contains("collapsed")) {
+        toggleBtn.innerHTML = "▶";
+    } else {
+        toggleBtn.innerHTML = "◀";
+    }
+}
+</script>
+
+</body>
+</html>
